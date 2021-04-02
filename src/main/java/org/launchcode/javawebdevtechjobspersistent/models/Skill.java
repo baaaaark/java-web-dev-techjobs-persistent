@@ -1,5 +1,7 @@
 package org.launchcode.javawebdevtechjobspersistent.models;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -9,19 +11,19 @@ public class Skill extends AbstractEntity {
 
     @NotBlank
     @Size(min = 7, max = 255)
-    public String skillDescription;
+    public String description;
 
     public Skill() {}
 
-    public Skill(String skillDescription) {
-        this.skillDescription = skillDescription;
+    public Skill(String description) {
+        this.description = description;
     }
 
-    public String getSkillDescription() {
-        return skillDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSkillDescription(String skillDescription) {
-        this.skillDescription = skillDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
