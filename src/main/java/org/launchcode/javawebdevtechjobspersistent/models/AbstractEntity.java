@@ -18,6 +18,13 @@ public abstract class AbstractEntity {
     @Size(min = 1, max = 255)
     private String name;
 
+    public AbstractEntity(){
+    }
+
+    public AbstractEntity(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
