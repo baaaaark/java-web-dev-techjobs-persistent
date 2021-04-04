@@ -2,6 +2,7 @@ package org.launchcode.javawebdevtechjobspersistent.controllers;
 
 import org.launchcode.javawebdevtechjobspersistent.models.Employer;
 import org.launchcode.javawebdevtechjobspersistent.models.Job;
+import org.launchcode.javawebdevtechjobspersistent.models.Skill;
 import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.data.SkillRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.data.JobRepository;
@@ -12,6 +13,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,15 +54,23 @@ public class HomeController {
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
+                                       Errors errors, Model model, @RequestParam int employerId, @NotNull @RequestParam (required = false) List<Integer> skills) {
+
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             return "add";
         }
+
+
+        List<Skill> skillList = (List<Skill>) skillRepository.findAllById(skills);
+        Employer employer = employerRepository.findById(employerId).get();
+        newJob.setSkills(skillList);
+        newJob.setEmployer(employer);
         jobRepository.save(newJob);
         model.addAttribute("jobs", jobRepository.findAll());
-        model.addAttribute("employers", employerRepository.findAll());
-        model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("skills", skillList);
+        model.addAttribute("employer", employer);
+
         return "redirect:";
     }
 
